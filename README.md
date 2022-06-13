@@ -25,6 +25,6 @@ from the host, access to the root account is:
 from a remote location, access to the user account is:
 - `ssh user@<HOME_NETWORK_IP_ADDRESS> [-p <PORT>]`
 
-Final notes:
+## Final notes:
 - The default user/password is `user:password`, this can be changed either in `./src/Dockerfile.docker-lab#L10` or using `passwd` once in the container.
 - the user account is tethered to a tmux session on ssh - you can't exit/detach tmux without killing your session. If this is undesired, remove `./src/Dockerfile.docker-lab#L20`
