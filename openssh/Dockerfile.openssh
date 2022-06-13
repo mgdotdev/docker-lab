@@ -1,0 +1,23 @@
+FROM archlinux:latest
+
+RUN pacman -Syu --noconfirm \
+    && pacman -S --noconfirm \
+        openssh \
+        tmux
+
+RUN [ ! -f /etc/ssh/ssh_host_rsa_key ] && ssh-keygen -A
+
+RUN useradd -m -s /bin/bash user && echo "user:password" | chpasswd
+WORKDIR /home/user
+# insert custom build config here
+
+RUN sed -i \
+        -e 's/^#*\(PasswordAuthentication\) .*/\1 yes/' \
+        -e 's/^#*\(UsePAM\) .*/\1 no/' \
+        /etc/ssh/sshd_config
+
+RUN echo "AllowUsers user" >> /etc/ssh/sshd_config
+RUN echo "if [ -t 0 ] && [[ -z \$TMUX ]] && [[ \$- = *i* ]]; then exec tmux new-session -A -s ssh_tmux; fi;" >> .bashrc
+
+CMD /usr/sbin/sshd -D
+

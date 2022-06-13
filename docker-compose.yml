@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  openssh:
+    container_name: openssh
+    build:
+      context: .
+      dockerfile: ./openssh/Dockerfile.openssh
+    ports:
+      - "2222:22"
